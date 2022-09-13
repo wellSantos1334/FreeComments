@@ -8,6 +8,10 @@ const app = express()
 
 const conn = require('./db/conn')
 
+// models
+const Comment = require('./models/Comment')
+const User = require('./models/User')
+
 // template engine
 app.engine('handlebars', exphbs.engine())
 app.set('view engine', 'handlebars')
@@ -48,6 +52,7 @@ app.use((req, res, hext) => {
 })
 
 conn.sequelize.sync().then(() => {
+// conn.sequelize.sync({force: true}).then(() => {
     app.listen(3000)
 }).catch((err) => {
     console.log(err)
