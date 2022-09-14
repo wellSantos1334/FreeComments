@@ -12,6 +12,12 @@ const conn = require('./db/conn')
 const Comment = require('./models/Comment')
 const User = require('./models/User')
 
+// import routes
+const commentsRoutes = require('./routes/commentsRoutes')
+
+// import controller
+const CommentController = require('./controllers/CommentController')
+
 // template engine
 app.engine('handlebars', exphbs.engine())
 app.set('view engine', 'handlebars')
@@ -44,12 +50,16 @@ app.use(flash())
 app.use(express.static('public'))
 
 // set session to res
-app.use((req, res, hext) => {
+app.use((req, res, next) => {
     if(req.session.userid) {
         res.locals.session = req.session
     }
     next()
 })
+
+// Routes
+app.use('/comments', commentsRoutes)
+app.use('/', CommentController.showComments)
 
 conn.sequelize.sync().then(() => {
 // conn.sequelize.sync({force: true}).then(() => {

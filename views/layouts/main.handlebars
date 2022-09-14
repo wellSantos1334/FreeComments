@@ -6,10 +6,31 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Free Comments</title>
+    <link rel="shortcut icon" href="/img/favicon.ico" type="image/x-icon">
+    <link rel="stylesheet" href="/css/style.css">
+    {{!-- BOOTSTRAP ICONS --}}
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.9.1/font/bootstrap-icons.css">
 </head>
 
 <body>
-    {{{body}}}
+    <nav id="navbar">
+        <a href="/" id="logo">
+            <img src="/img/logo.png" alt="Comments">
+        </a>
+        <ul>
+            <li><a href="/">Comments</a></li>
+            {{!-- URL after authenticate --}}
+            <li><a href="/login">Login</a></li>
+            <li><a href="/register">Register</a></li>
+        </ul>
+    </nav>
+    <div class="container">
+        {{!-- Messages --}}
+        {{{body}}}
+    </div>
+    <footer>
+        <p><span>Free Comments</span> &copy; 2022 </p>
+    </footer>
 </body>
 
 </html>
