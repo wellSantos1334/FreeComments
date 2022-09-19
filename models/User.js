@@ -9,7 +9,7 @@ const User = db.sequelize.define('User', {
         type: db.Sequelize.STRING,
         require: true
     },
-    senha: {
+    password: {
         type: db.Sequelize.STRING,
         require: true
     }
