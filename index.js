@@ -14,6 +14,7 @@ const User = require('./models/User')
 
 // import routes
 const commentsRoutes = require('./routes/commentsRoutes')
+const authRoutes = require('./routes/authRoutes')
 
 // import controller
 const CommentController = require('./controllers/CommentController')
@@ -51,7 +52,7 @@ app.use(express.static('public'))
 
 // set session to res
 app.use((req, res, next) => {
-    if(req.session.userid) {
+    if (req.session.userid) {
         res.locals.session = req.session
     }
     next()
@@ -59,11 +60,21 @@ app.use((req, res, next) => {
 
 // Routes
 app.use('/comments', commentsRoutes)
+app.use('/', authRoutes)
 app.use('/', CommentController.showComments)
 
 conn.sequelize.sync().then(() => {
-// conn.sequelize.sync({force: true}).then(() => {
+    // conn.sequelize.sync({force: true}).then(() => {
     app.listen(3000)
 }).catch((err) => {
     console.log(err)
 })
+
+
+
+
+
+
+
+
+
