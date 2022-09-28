@@ -6,6 +6,39 @@ module.exports = class AuthController {
         res.render('auth/login')
     }
 
+    static async loginPost(req, res) {
+        const { email, password } = req.body
+
+        // find user
+        const user = await User.findOne({ where: { email: email }, raw: true })
+        console.log(user)
+        if (!user) {
+            req.flash('message', 'User not found!')
+            res.render('auth/login')
+
+            return
+        }
+
+        // check if password match
+
+        if (!(await bcrypt.compareSync(password, user.password))) {
+            req.flash('message', 'Invalid pasword, not match')
+            res.render('auth/login')
+
+            return
+        }
+
+        // initialize session
+        req.session.userid = user.id
+
+        req.flash('message', 'Created user with success')
+
+        req.session.save(() => {
+            res.redirect('/')
+        })
+
+    }
+
     static register(req, res) {
         res.render('auth/register')
     }
@@ -53,8 +86,10 @@ module.exports = class AuthController {
         } catch (err) {
             console.log('Error: ' + err)
         }
+    }
 
-
-
+    static logout(req, res) {
+        req.session.destroy()
+        res.redirect('/login')
     }
 }
