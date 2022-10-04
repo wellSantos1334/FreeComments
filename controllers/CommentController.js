@@ -25,7 +25,7 @@ module.exports = class CommentController {
 
         let emptyComments = false
 
-        if(comments.length === 0) {
+        if (comments.length === 0) {
             emptyComments = true
         }
 
@@ -71,5 +71,40 @@ module.exports = class CommentController {
             console.log(err)
         }
 
+    }
+
+    static async updateComment(req, res) {
+        const id = req.params.id
+
+        const comment = await Comment.findOne({
+            where: {
+                id: id
+            },
+            raw: true
+        })
+
+        res.render('comments/edit', { comment })
+    }
+
+    static async updateCommentSave(req, res) {
+        const id = req.body.id
+
+        const comment = {
+            title: req.body.title
+        }
+
+
+
+        try {
+            await Comment.update(comment, { where: { id: id } })
+
+            req.flash('message', 'Comment edited')
+
+            req.session.save(() => {
+                res.redirect('/comments/dashboard')
+            })
+        } catch (err) {
+            console.log(err)
+        }
     }
 }

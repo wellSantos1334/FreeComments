@@ -11,6 +11,8 @@ router.get('/', CommentController.showComments)
 router.get('/dashboard', checkAuth, CommentController.dashboard)
 router.get('/add', checkAuth, CommentController.newComment)
 router.post('/add', checkAuth, CommentController.newCommentSave)
+router.get('/edit/:id', checkAuth, CommentController.updateComment)
+router.post('/edit', checkAuth, CommentController.updateCommentSave)
 router.post('/remove', checkAuth, CommentController.removeComment)
 
 module.exports = router
