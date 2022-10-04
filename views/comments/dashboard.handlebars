@@ -4,5 +4,19 @@
         <a href="/comments/add" class="btn">New Comment</a>
     </div>
 
-    <h3>Your comments</h3>
+    <h3>Yours comments</h3>
+    <ul>
+        {{#each comments}}
+            <li>
+                <span class="label">{{this.title}}</span>
+                <span class="actions">
+                    <a href="/" class="btn">Edit</a>
+                    <form action="/comments/remove" method="POST">
+                        <input type="hidden" name="id" value="{{this.id}}">
+                        <input type="submit" value="Delete" class="btn">
+                    </form>
+                </span>
+            </li>
+        {{/each}}
+    </ul>
 </div>
