@@ -23,7 +23,13 @@ module.exports = class CommentController {
 
         const comments = user.Comments.map((result) => result.dataValues)
 
-        res.render('comments/dashboard', { comments })
+        let emptyComments = false
+
+        if(comments.length === 0) {
+            emptyComments = true
+        }
+
+        res.render('comments/dashboard', { comments, emptyComments })
     }
 
     static newComment(req, res) {
