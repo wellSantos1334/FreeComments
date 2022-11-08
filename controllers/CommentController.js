@@ -1,9 +1,40 @@
 const Comment = require('../models/Comment')
 const User = require('../models/User')
 
+const { Op } = require('sequelize')
+
 module.exports = class CommentController {
     static async showComments(req, res) {
-        res.render('comments/home')
+        let search = ''
+        if(req.query.search){
+            search = req.query.search
+        }
+
+        let order = 'DESC'
+
+        if(req.query.order === 'old') {
+            order = 'ASC'
+        } else {
+            order = 'DESC'
+        }
+
+        const commentsData = await Comment.findAll({
+            include: User,
+            where: {
+                title:{[Op.like]: `%${search}%`},
+            },
+            order: [['createdAt', order]],
+        })
+
+        const comments = commentsData.map((result) => result.get({plain: true}))
+
+        let commentsQty = comments.length
+
+        if(commentsQty === 0) {
+            commentsQty = false
+        }
+
+        res.render('comments/home', { comments, search, commentsQty })
     }
 
     static async dashboard(req, res) {
@@ -15,7 +46,7 @@ module.exports = class CommentController {
             include: Comment,
             plain: true,
         })
-
+        console.log(user)
         // check if user exist 
         if (!user) {
             res.redirect('/login')
@@ -92,9 +123,6 @@ module.exports = class CommentController {
         const comment = {
             title: req.body.title
         }
-
-
-
         try {
             await Comment.update(comment, { where: { id: id } })
 
